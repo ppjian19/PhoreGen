@@ -11,15 +11,15 @@
 
 # 📑 Here shows the process of PhoreGen generating an entire 3D molecule under the pharmacophore constraint.
 
-<p align="center">     
-    <img src="./assets/generation demo.gif" alt="generation" width="70%"/> 
-</p>
+<video src="https://github.com/user-attachments/assets/b238311a-34f3-4630-b190-4924b40b6ff5" controls="controls" style="max-width: 730px;">
+</video>
+
 
 # 📑 Here shows an example of PhoreGen generating new molecules for metallo- and serine-β-lactamases.
 
-<p align="center">     
-    <img src="./assets/MBL-SBL demo.gif" alt="model" width="70%"/> 
-</p>
+<video src="https://github.com/user-attachments/assets/d0bed13a-2b68-4336-a519-a052a8807443" controls="controls" style="max-width: 730px;">
+</video>
+
 
 
 # 🚀 How to create a pharmacophore model for PhoreGen application
