@@ -1,5 +1,3 @@
-
-
 <h1 align="center">  PhoreGen  </h1>
 <h2 align="center"> Pharmacophore-Oriented 3D Molecular Generation towards Efficient Feature-Customized Drug Discovery </h2>
 
@@ -9,25 +7,67 @@
 
 [PhoreGen](https://phoregen.ddtmlab.org) is a pharmacophore-oriented 3D molecular generation framework designed to generate entire 3D molecules that are precisely aligned with a given pharmacophore model. It employs asynchronous perturbations and simultaneously updates on both atomic and bond information, coupled with a message-passing mechanism that incoporates prior knowledge of ligand-pharmacophore mapping during the diffusion-denoising process. By hierarchical learning on a large number of ligand-pharmacophore pairs derived from 3D ligands, complex structures, and docking-produced potential binding modes, PhoreGen can generate chemically and energetically reasonable 3D molecules well-aligned with the pharmacophore constraints, while maintaining structural diversity, drug-likeness, and potentially high binding affinity. Notably, it excels in generating feature-customized molecules, e.g. with covalent groups and metal-binding motifs, at high frequency, demonstrating its unparalleled ability and practicality even for challenging drug design scenarios.
 
-# 📑 Here shows the process of PhoreGen generating an entire 3D molecule under the pharmacophore constraint.
-
-<video src="https://github.com/user-attachments/assets/b238311a-34f3-4630-b190-4924b40b6ff5" controls="controls" style="max-width: 730px;">
-</video>
+<img src="./assets/overall.jpg" alt="model"  width="70%"/>
 
 
-# 📑 Here shows an example of PhoreGen generating new molecules for metallo- and serine-β-lactamases.
+## Installation
+### Dependency
+The codes have been tested in the following environment:
+Package  | Version
+--- | ---
+Python | 3.9.16
+PyTorch | 1.12.1
+CUDA | 12.1
+PyTorch Geometric | 2.1.0 
+RDKit | 2022.9.5
+OpenBabel | 3.1.1
+Pandas | 1.5.3
+NumPy | 1.25.1
+### Install via conda yaml file
+```bash
+conda env create -f phoregen_env.yml
+conda activate phoregen
+```
 
-<video src="https://github.com/user-attachments/assets/d0bed13a-2b68-4336-a519-a052a8807443" controls="controls" style="max-width: 730px;">
-</video>
+
+## Datasets
+
+Please refer to [`README.md`](./data/README.md) in the `data` folder.
+
+## Sampling
+
+### Preparing pharmacophore models
+You can generate pharmacophore models based on complexes or ligands using the online tool available at [AncPhore](https://ancphore.ddtmlab.org/Model).
+
+### Generating molecules
+Use the following command to generate molecules based on the given pharmacophore models:
+```bash
+python sample_all.py --num_samples 100 --outdir ./results/test --phore_file_list ./data/phore_for_sampling/file_index.json
+```
+Key arguments:
+- `num_samples`: Number of molecules to generate for each pharmacophore model.
+- `outdir`: Output directory for the generated molecules.
+- `phore_file_list`: Path to the JSON file containing the list of pharmacophore models, we provide a test file in `./data/phore_for_sampling/file_index.json`.
+
+Output files include 3D molecular structures in `.sdf` format.
 
 
+## Training
 
-# 🚀 How to create a pharmacophore model for PhoreGen application
-We here provide a user-friendly web server for this purpose.
+### Pre-training
+To perform pretraining with the LigPhore dataset:
+```bash
+python train.py --config ./configs/train_lig-phore.yml
+```
 
-Please visit https://ancphore.ddtmlab.org/Modeling
+### Fine-Tuning
+To refine the model using CpxPhore and DockPhore datasets:
+```bash
+python train.py --config ./configs/train_dock-cpx-phore.yml
+```
 
-# 📩 Contact
+
+## 📩Contact
 
 For questions or feedback, please contact:
 - **Peng Jian**: ppjian19@163.com
