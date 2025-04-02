@@ -1,0 +1,120 @@
+model:
+  name: diffusion
+  num_atom_classes: 12
+  num_bond_classes: 6
+  lig_feat_dim: 12
+  phore_feat_dim: 16
+  hidden_dim: 128
+  bond_diffusion: True
+  bond_net_type: lin
+  bond_len_loss: False
+  count_pred_type: boundary
+  loss_weight: [1, 100, 100]  # [pos, node, edge]
+  count_factor: 1
+  hp_emb_with_pos: True
+  diff:
+    num_timesteps: 1000
+    time_dim: 10
+    categorical_space: discrete
+    diff_pos:
+      beta_schedule: advance
+      scale_start: 0.9999
+      scale_end: 0.0001
+      width: 3
+    diff_atom: 
+      init_prob: tomask
+      beta_schedule: advance
+      scale_start: 0.9999
+      scale_end: 0.0001
+      width: 3
+    diff_bond:
+      init_prob: absorb
+      beta_schedule: segment
+      time_segment: [600, 400]
+      segment_diff: 
+        - scale_start: 0.9999
+          scale_end: 0.001
+          width: 3
+        - scale_start: 0.001
+          scale_end: 0.0001
+          width: 2
+  denoiser:
+    name: uni_node_edge
+    num_blocks: 1
+    num_layers: 6
+    hidden_dim: 128
+    n_heads: 16
+    knn: 32
+    edge_feat_dim: 4
+    num_r_gaussian: 20
+    act_fn: relu
+    norm: True
+    cutoff_mode: knn
+    r_max: 10.
+    x2h_out_fc: False
+    h_node_in_bond_net: True
+    direction_match: True
+
+
+train:
+  config: null
+  seed: 2024
+  device: cuda
+  parallel: False
+  test: False
+  batch_size: 8
+  num_workers: 18
+  epochs: 160
+  n_report_steps: 3000
+  ema: True
+  ema_decay: 0.9999
+  clip_grad: True
+  clip_grad_mode: queue
+  max_grad_norm: 10.0
+  add_lig_noise: True
+  lig_noise_std: 0.1
+  add_phore_noise: True
+  phore_noise_std: 0.1
+  phore_norm_angle: 5.0
+  optimizer:
+    type: adam
+    lr: 1.0e-4
+    weight_decay: 1.0e-12
+  scheduler:
+    type: plateau
+    lr_decay_factor: 0.9
+    scheduler_patience: 20
+    min_lr: 1.0e-6
+
+
+dataset:
+  cut_data: False
+  zinc_train_filelist: ./data/index/dense/train_filelist.pkl
+  zinc_valid_filelist: ./data/index/dense/valid_filelist.pkl
+  zinc_test_filelist: ./data/index/dense/test_filelist.pkl
+  pdbbind_filelist: ./data/index/pdbbind_index_cloud_filtered_NumAtoms60.pkl
+  save_path: ./data/ZINC_300W_dense_pkl
+  checkpoint: 
+  remove_H: True
+  center: phore
+  pg_data: mol_phore
+  data_name: zinc_300
+  max_atom: 78
+  charge_weight: 0.00
+  include_hybrid: False
+  hybrid_one_hot: False
+  add_core_atoms: False
+  include_valencies: False
+  include_ring: False
+  include_aromatic: False
+  include_neib_dist: False
+
+
+logger:
+  result: ../results
+  run_name: zinc_V1
+  restart: backup
+  restart_dir: 
+  model_ckp: last
+  tensorboard: True
+
