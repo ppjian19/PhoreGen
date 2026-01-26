@@ -37,7 +37,7 @@ Please refer to [`README.md`](./data/README.md) in the `data` folder.
 ## Sampling
 
 ### Preparing pharmacophore models
-You can generate pharmacophore models based on complexes or ligands using the online tool available at [AncPhore](https://ancphore.ddtmlab.org/Model).
+You can generate pharmacophore models based on complexes or ligands using the online tool available at [AncPhore](https://ancphore.ddtmlab.org/Modeling).
 
 ### Generating molecules
 Use the following command to generate molecules based on the given pharmacophore models:
